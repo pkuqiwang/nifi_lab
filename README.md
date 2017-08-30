@@ -273,6 +273,8 @@ In this lab we are going to explore creating, writing to and consuming Kafka top
    - send messages to kafka topic
    - receive messages from kafka topic
 
+Before start the lab steps, make sure kafka service is started in [Ambari UI](http://127.0.0.1:9080/). If Kafka is not started, manually start the service from Ambari.
+
 1. Creating a topic
   - Step 1: Open an SSH connection to your VM.
   - Step 2: Naviagte to the Kafka directory (````/usr/hdp/current/kafka-broker````), this is where Kafka is installed, we will use the utilities located in the bin directory.
