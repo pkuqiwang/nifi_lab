@@ -347,7 +347,7 @@ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topi
 	- Drag and drop ConsumeKafka_0_10 and config like the following
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab6-1.png)
 	- Drag adn drop PuFile processor and link the kafka processor to it, set ```Directory``` value to ```/tmp/nifilab```
-	- start all processor and you will see the JSON data file get read from kafka queue and writen to local folder 
+	- start all processor and you will see the JSON data file get read from kafka queue and written to local folder 
 	
 ------------------
 
