@@ -71,7 +71,7 @@ ambari-agent restart
 
 ### NiFi UI
 
-- Access Nifi UI at [http://127.0.0.1:19090](http://127.0.0.1:19090)
+- Access Nifi UI at [http://127.0.0.1:19090/nifi](http://127.0.0.1:19090/nifi)
 - For more reference about Nifi, please go to Nifi [documents](https://nifi.apache.org/docs.html)
 
 -----------------------------
