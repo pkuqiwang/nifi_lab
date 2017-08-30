@@ -47,7 +47,7 @@ All the following instrucitons are based on the [VirtualBox](https://www.virtual
 Once the Sandbox is started in VirtualBox, the start page will show you the start page link like [http://127.0.0.1:18888](http://127.0.0.1:18888)
 ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab1-0.png)
 
-### Connect to VM from Windows using Putty or Linux/MacOSX using terminals
+### Connect to VM from Windows using Putty or Linux/MacOSX using ssh
 	- host: 127.0.0.1
 	- port: 12222
 	- user: root
@@ -66,6 +66,8 @@ ambari-agent restart
 ### Login to Ambari
 
 - Access Ambari UI at [http://127.0.0.1:18080](http://127.0.0.1:18080)
+	user: admin
+	password: the one you set in previous step
 
 ### NiFi UI
 
