@@ -12,13 +12,16 @@
 - [Lab 6](#lab-6)
   - Integrate Kafka with Nifi
 
-## Goals:
+## Goals of the Labs:
   - Setup sandbox lab environment	
   - Consume Meetup RSVP stream
   - Extract the JSON elements we are interested in
-  - Split the JSON into smaller fragments
-  - Write the JSON to Kafka
-  - Read the data from Kafka
+  - Split the JSON into smaller fragmentsand 
+  - Create, save, upload Nifi template
+  - Create Nifi flow from template
+  - Send data to remote Nifi instance
+  - Write data to Kafka with tool and Nifi
+  - Consume data from Kafka with tool and Nifi
   - Write data to local disk
 
 We will run through a series of labs and step by step to achieve all of the above goals
@@ -153,31 +156,31 @@ Our final flow for this lab will look like the following:
 
 ## Using Nifi template
    
-In this lab, we will learn how create, save, upload and create flow using NiFi template:
+In this lab, we will learn how to create, save, upload Nifi template and create Nifi flow using NiFi template.
 
 ### Goals:
-   - Create Nifi flow to template
-   - Save Template to file
+   - Create Nifi template from exisitng flow
+   - Save Template to xml file and upload xml template file to Nifi
    - Create new flow with existing template
 
-- Step 1: Select all inside Processor Group "Lab 2"
-	- Create a new template by click "create template" button
+- Step 1: Select everything inside Processor Group ```Lab 2```
+	- Create a new template by click ```create template``` button
   	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-0.png)
 
-- Step 2: Go to Template manager and download the newly create template to disk
+- Step 2: Go to Template manager and download the newly created template to disk as xml file
 	- In Template manager, click download button next to the newly created template to download it to local disk
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-1.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-2.png)
 
-- Step 3: Upload the template from load disk to create another template
-	- Change the name inside the downloaded xml so there will be no name conflict with update this to Nifi
+- Step 3: Upload the template xml file from load disk to create another template
+	- Change the template name inside the downloaded xml file so there will be no conflict when upload this template to Nifi
 	```<name>Lab2TemplateNew</name>```
 	- Click upload template button to upload the saved xml template file to Nifi
 	- Create with a new name
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
 
 - Step 4: Create a new flow from existing templates
-	- Create a new Processor Group "Lab 3" under "Nifi Lab" and double click to go inisde
+	- Create a new Processor Group ```Lab 3``` under ```Nifi Lab``` and double click to go inisde
 	- Drag and drop template on canvas and select one of the template to create a new flow
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-4.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-5.png)
