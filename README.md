@@ -49,6 +49,7 @@ Once the Sandbox is started in VirtualBox, the start page will show you the star
 
 ### Connect to VM from Windows using Putty or Linux/MacOSX using terminals
 	- host: 127.0.0.1
+	- port: 12222
 	- user: root
 	- password: hadoop
 
