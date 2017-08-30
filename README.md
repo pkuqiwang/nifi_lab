@@ -1,21 +1,16 @@
 # Contents
 - [Lab 1](#lab-1)
-  - Build Environment
+  - Build lab nnvironment
 - [Lab 2](#lab-2)
   - Build a simple NiFi data flow
-- [Lab 3](#lab-3) - MiNiFi
-  - Enable Site2Site in NiFi
-  - Designing MiNiFi Flow
-  - Preparing the flow
-  - Running MiNiFi
-- [Lab 4](#lab-4) - Kafka Basics
-  - Creating a topic
-  - Producing data
-  - Consuming data
-- [Lab 5](#lab-5) - Integrating Kafka with NiFi
-  - Creating the Kafka topic
-  - Adding the Kafka producer processor
-  - Verifying the data is flowing
+- [Lab 3](#lab-3) 
+  - Using Nifi Templates
+- [Lab 4](#lab-4) 
+  - Minifi and remote process group
+- [Lab 5](#lab-5) 
+  - Kafka basics
+- [Lab 6](#lab-6)
+  - integrate Kafka with Nifi
 
 ## Goals:
   - Setup sandbox lab environment	
@@ -180,10 +175,9 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 - Step 4: Create a new flow from existing templates
 	- Create a new Processor Group under "Nifi Lab" and go inisde this newly create group
 	- Drag and drop template on canvas and select one of the template to create a new flow
-	- ![Image]()
-	- ![Image]()
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-4.png)
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-5.png)
 	- Now you have a flow create from the template. There will be warning on Web socket controller service. This is caused by the limited scope of the controller service. You'll need to create another controller service to solve the problem.
-
 
 # Lab 4
 
@@ -269,45 +263,43 @@ You should be able to now go to your NiFi flow and see data coming in from MiNiF
 # Lab 5
 
 ## Kafka Basics
-In this lab we are going to explore creating, writing to and consuming Kafka topics. This will come in handy when we later integrate Kafka with NiFi and Storm.
+In this lab we are going to explore creating, writing to and consuming Kafka topics. This will come in handy when we later integrate Kafka with NiFi.
 
 1. Creating a topic
-  - Step 1: Open an SSH connection to your EC2 Node.
-  - Step 2: Naviagte to the Kafka directory (````/usr/hdf/current/kafka-broker````), this is where Kafka is installed, we will use the utilities located in the bin directory.
+  - Step 1: Open an SSH connection to your VM.
+  - Step 2: Naviagte to the Kafka directory (````/usr/hdp/current/kafka-broker````), this is where Kafka is installed, we will use the utilities located in the bin directory.
 
-    ````
-    #cd /usr/hdf/current/kafka-broker/
-    ````
+```
+cd /usr/hdp/current/kafka-broker/
+```
 
   - Step 3: Create a topic using the kafka-topics.sh script
-    ````
-    bin/kafka-topics.sh --zookeeper localhost:2181 --create --partitions 1 --replication-factor 1 --topic first-topic
-
-    ````
+```
+bin/kafka-topics.sh --zookeeper localhost:2181 --create --partitions 1 --replication-factor 1 --topic first-topic
+```
 
     NOTE: Based on how Kafka reports its metrics topics with a period ('.') or underscore ('_') may collide with metric names and should be avoided. If they cannot be avoided, then you should only use one of them.
 
   - Step 4:	Ensure the topic was created
-    ````
-    bin/kafka-topics.sh --list --zookeeper localhost:2181
-    ````
+```
+bin/kafka-topics.sh --list --zookeeper localhost:2181
+```
 
 2. Testing Producers and Consumers
-  - Step 1: Open a second terminal to your EC2 node and navigate to the Kafka directory
+  - Step 1: Open a second terminal to your VM and navigate to the Kafka directory
   - In one shell window connect a consumer:
-  ````
- bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic first-topic
-````
+```
+bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic first-topic
+```
 
     Note: using –from-beginning will tell the broker we want to consume from the first message in the topic. Otherwise it will be from the latest offset.
 
   - In the second shell window connect a producer:
-````
-bin/kafka-console-producer.sh --broker-list demo.hortonworks.com:6667 --topic first-topic
-````
+```
+bin/kafka-console-producer.sh --broker-list sandbox-hdf:6667 --topic first-topic
+```
 
-
-- Sending messages. Now that the producer is  connected  we can type messages.
+- Sending messages. Now that the producer is connected, we can type messages.
   - Type a message in the producer window
 
 - Messages should appear in the consumer window.
