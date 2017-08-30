@@ -98,9 +98,10 @@ Our final flow for this lab will look like the following:
 	- double click ```Lab 2``` Processor Group and continue the following steps inside
 
 - Step 2: Add a ConnectWebSocket processor to the cavas
-      	- Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
-      	- Set WebSocket Client ID to your favorite number.
+	- Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
+	- Set WebSocket Client ID to your favorite number.
       	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
+	- Enable controller service by click the flash icon
       
 - Step 3: Add an Update Attribute procesor
 	- Configure it to have a custom property called ``` mime.type ``` with the value of ```application/json```
