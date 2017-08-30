@@ -26,32 +26,28 @@ We will run through a series of labs and step by step to achieve all of the abov
 ------------------
 
 # Lab 1
+## Build lab environment
 
+### Goals:
+   - Download and start Hortonworks HDF Sandbox
+   - Access sandbox Ambari UI and Nifi UI
+   - Remote to Sandbox console
+   
 ## Get HDF Sandbox
 
 Download the HDF [Sandbox](https://hortonworks.com/downloads/#sandbox) from Hortonworks website.
 
-All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight change to some of the settings.
+All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight changes to some of the settings.
 
 ## Use the Sandbox
 
-Once the Sandbox is started in VirtualBox, the start page will show you the start page link like 
+Once the Sandbox is started in VirtualBox, the start page will show you the start page link like [http://127.0.0.1:18888](http://127.0.0.1:18888)
+![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab1-0.png)
 
-[http://127.0.0.1:18888](http://127.0.0.1:18888)
-
-### To connect using Putty from Windows laptop
-
-- Use putty to connect to your sandbox, password is "hadoop"
-```
-ssh root@127.0.0.1 -p 12222
-```
-
-### To connect from Linux/MacOSX laptop
-
-- Use terminal to connect to your sandbox, password is "hadoop"
-```
-ssh root@127.0.0.1 -p 12222
-```
+### Connect to VM from Windows using Putty or Linux/MacOSX using terminals
+	- host: 127.0.0.1
+	- user: root
+	- password: hadoop
 
 ### Reset Ambari password
 
@@ -65,17 +61,20 @@ ambari-agent restart
 
 ### Login to Ambari
 
-- You could access Ambari UI at [http://127.0.0.1:18080](http://127.0.0.1:18080)
+- Access Ambari UI at [http://127.0.0.1:18080](http://127.0.0.1:18080)
 
-### NiFi Access
+### NiFi UI
 
-- You could access Nifi UI at [http://127.0.0.1:19090](http://127.0.0.1:19090)
+- Access Nifi UI at [http://127.0.0.1:19090](http://127.0.0.1:19090)
+- For more reference about Nifi, please go to Nifi [documents](https://nifi.apache.org/docs.html)
 
 -----------------------------
 
 # Lab 2
 
-## Goals:
+## Build Nifi Flow
+
+### Goals:
    - Consume Meetup RSVP stream
    - Extract the JSON elements we are interested in
    - Split the JSON into smaller fragments
@@ -88,36 +87,38 @@ To get started we need to consume the data from the Meetup RSVP stream, extract 
 Our final flow for this lab will look like the following:
 ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2.png)
 
-  - Step 1: Drag a Processor Group tot he canvas and name it "Nifi Lab"
-  	- double click the newly create Porcessor Group and create a new Processor Group called "Lab 2"
-	- double click "Lab 2" Processor Group and continue the following steps inside
-  - Step 2: Add a ConnectWebSocket processor to the cavas
-      - Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
-      - Set WebSocket Client ID to your favorite number.
-      - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
-      
-  - Step 3: Add an Update Attribute procesor
-    - Configure it to have a custom property called ``` mime.type ``` with the value of ``` application/json ```
-    - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-2.png)
-    
-  - Step 4. Add an EvaluateJsonPath processor and configure it as shown below:
-    - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-3.png)
+- Step 1: Drag a Processor Group to the canvas and name it ```Nifi Lab```
+	- double click the newly create Porcessor Group and create a new Processor Group called ```Lab 2```
+	- double click ```Lab 2``` Processor Group and continue the following steps inside
 
-    - The properties to add are:
-```
-event.name	$.event.event_name  
-event.url	$.event.event_url    
-group.city	$.group.group_city    
-group.state	$.group.group_state    
-group.country	$.group.group_country    
-group.name	$.group.group_name    
-venue.lat	$.venue.lat    
-venue.lon	$.venue.lon    
-venue.name	$.venue.venue_name
-```
+- Step 2: Add a ConnectWebSocket processor to the cavas
+      	- Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
+      	- Set WebSocket Client ID to your favorite number.
+      	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
+      
+- Step 3: Add an Update Attribute procesor
+	- Configure it to have a custom property called ``` mime.type ``` with the value of ```application/json```
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-2.png)
     
-  - Step 5: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
-  - Step 6: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
+- Step 4. Add an EvaluateJsonPath processor and configure it as shown below:
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-3.png)
+
+    	- The properties to add are:
+	```
+	event.name	$.event.event_name  
+	event.url	$.event.event_url    
+	group.city	$.group.group_city    
+	group.state	$.group.group_state    
+	group.country	$.group.group_country    
+	group.name	$.group.group_name    
+	venue.lat	$.venue.lat    
+	venue.lon	$.venue.lon    
+	venue.name	$.venue.venue_name
+	```
+    
+- Step 5: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
+  
+- Step 6: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
 ```
 {
 	"event_name": "${event.name}",
@@ -136,9 +137,9 @@ venue.name	$.venue.venue_name
 	 	}
 }
 ```
-  - Step 7: Add a funnel processor to the canvas and connect ReplaceText to it
+- Step 7: Add a funnel processor to the canvas and connect ReplaceText to it
 
-##### Questions to Answer
+#### Questions to Answer
 1. What does a full RSVP Json object look like?
 2. How many output files do you end up with?
 3. How can you change the file name that Json is saved as from PutFile?
@@ -150,11 +151,11 @@ venue.name	$.venue.venue_name
 
 # Lab 3
 
-## Using Nifi template ##
-
+## Using Nifi template
+   
 In this lab, we will learn how create, save, upload and create flow using NiFi template:
 
-## Goals:
+### Goals:
    - Create Nifi flow to template
    - Save Template to file
    - Create new flow with existing template
@@ -162,16 +163,19 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 - Step 1: Select all inside Processor Group "Lab 2"
 	- Create a new template by click "create template" button
   	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-0.png)
+
 - Step 2: Go to Template manager and download the newly create template to disk
 	- In Template manager, click download button next to the newly created template to download it to local disk
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-1.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-2.png)
+
 - Step 3: Upload the template from load disk to create another template
 	- Change the name inside the downloaded xml so there will be no name conflict with update this to Nifi
 	```<name>Lab2TemplateNew</name>```
 	- Click upload template button to upload the saved xml template file to Nifi
 	- Create with a new name
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
+
 - Step 4: Create a new flow from existing templates
 	- Create a new Processor Group "Lab 3" under "Nifi Lab" and double click to go inisde
 	- Drag and drop template on canvas and select one of the template to create a new flow
@@ -179,74 +183,65 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-5.png)
 	- Now you have a flow create from the template. There will be warning on Web socket controller service. This is caused by the limited scope of the controller service. You'll need to create another controller service to solve the problem.
 
+---------------------
+
 # Lab 4
 
-## Getting started with MiNiFi ##
-
+## Getting started with MiNiFi
+   
 In this lab, we will learn how configure MiNiFi to send data to NiFi:
 
-* Setting up the Flow for NiFi
-* Setting up the Flow for MiNiFi
-* Preparing the flow for MiNiFi
-* Configuring and starting MiNiFi
-* Enjoying the data flow!
-
+### Goals:
+   - Understand how to communicate to remote Nifi instance
+   - Prepare flow for Minifi
 
 ## Setting up the Flow for NiFi
-**NOTE:** Before starting NiFi we need to enable Site-to-Site communication. To do that  we can either make the change via Ambari or edit the config by hand. In Ambari the below property values can be found at ````http://<EC2_NODE>:8080/#/main/services/NIFI/configs```` . To make the changes by hand do the following:
+**NOTE:** Before starting NiFi we need to enable Site-to-Site communication. We can make the change via Ambari 
 
-* Open /usr/hdf/current/nifi/conf/nifi.properties in your favorite editor
 * Change:
-  ````
-			nifi.remote.input.host=
-			nifi.remote.input.socket.port=
-			nifi.remote.input.secure=true
-  ````
-  To
-  ```
-   		nifi.remote.input.socket.port=10000
-			
-  ```
+```
+nifi.remote.input.host=
+nifi.remote.input.secure=true
+nifi.remote.input.socket.port=10000			
+```
 * Restart NiFi via Ambari
-
 
 Now we should be ready to create our flow. To do this do the following:
 
-1.	The first thing we are going to do is setup an Input Port. This is the port that MiNiFi will be sending data to. To do this drag the Input Port icon to the canvas and call it "From MiNiFi".
+1. The first thing we are going to do is setup an Input Port. This is the port that MiNiFi will be sending data to. To do this drag the Input Port icon to the canvas and call it "From MiNiFi".
 
 2. Now that the Input Port is configured we need to have somewhere for the data to go once we receive it. In this case we will keep it very simple and just log the attributes. To do this drag the Processor icon to the canvas and choose the LogAttribute processor.
 
-3.	Now that we have the input port and the processor to handle our data, we need to connect them. 
+3. Now that we have the input port and the processor to handle our data, we need to connect them. 
 
-4.  We are now ready to build the MiNiFi side of the flow. To do this do the following:
-	* Add a GenerateFlowFile processor to the canvas (don't forget to configure the properties on it)
-	* Add a Remote Processor Group to the canvas
-
-           For the URL copy and paste the URL for the NiFi UI from your browser
-   * Connect the GenerateFlowFile to the Remote Process Group
+4. We are now ready to build the MiNiFi side of the flow. To do this do the following:
+	- Add a GenerateFlowFile processor to the canvas (don't forget to configure the properties on it)
+	- Add a Remote Processor Group to the canvas
+	- For the URL copy and paste the URL for the NiFi UI from your browser
+ 	- Connect the GenerateFlowFile to the Remote Process Group
 
 5. The next step is to generate the flow we need for MiNiFi. To do this do the following steps:
-
-   * Create a template for MiNiFi 
-   * Select the GenerateFlowFile and the NiFi Flow Remote Processor Group (these are the only things needed for MiMiFi)
-   * Select the "Create Template" button from the toolbar
-   * Choose a name for your template
+	- Create a template for MiNiFi 
+	- Select the GenerateFlowFile and the NiFi Flow Remote Processor Group (these are the only things needed for MiMiFi)
+	- Select the "Create Template" button from the toolbar
+	- Choose a name for your template
 	
-
 7. Now we need to download the template
+
 8. Now SCP the template you downloaded to the ````/temp```` directory on your EC2 instance.
-9.  We are now ready to setup MiNiFi. However before doing that we need to convert the template to YAML format which MiNiFi uses. To do this we need to do the following:
 
-    * Navigate to the minifi-toolkit directory (/usr/hdf/current/minifi/minifi-toolkit-0.2.0)
-    * Transform the template that we downloaded using the following command:
+9. We are now ready to setup MiNiFi. However before doing that we need to convert the template to YAML format which MiNiFi uses. To do this we need to do the following:
 
-      ````bin/config.sh transform <INPUT_TEMPLATE> <OUTPUT_FILE>````
+	- Navigate to the minifi-toolkit directory (/usr/hdf/current/minifi/minifi-toolkit-0.2.0)
+	- Transform the template that we downloaded using the following command:
+
+      ```bin/config.sh transform <INPUT_TEMPLATE> <OUTPUT_FILE>```
 
       For example:
 
-      ````bin/config.sh transform /temp/MiNiFi_Flow.xml config.yml````
+      ```bin/config.sh transform /temp/MiNiFi_Flow.xml config.yml```
 
-10. Next copy the ````config.yml```` to the ````minifi-0.2.0/conf```` directory. That is the file that MiNiFi uses to generate the nifi.properties file and the flow.xml.gz for MiNiFi.
+10. Next copy the ```config.yml``` to the ```minifi-0.2.0/conf``` directory. That is the file that MiNiFi uses to generate the nifi.properties file and the flow.xml.gz for MiNiFi.
 
 11. That is it, we are now ready to start MiNiFi. To start MiNiFi from a command prompt execute the following:
 
@@ -263,7 +258,13 @@ You should be able to now go to your NiFi flow and see data coming in from MiNiF
 # Lab 5
 
 ## Kafka Basics
+
 In this lab we are going to explore creating, writing to and consuming Kafka topics. This will come in handy when we later integrate Kafka with NiFi.
+
+### Goals:
+   - Create kafka topic using console tool
+   - send messages to kafka topic
+   - receive messages from kafka topic
 
 1. Creating a topic
   - Step 1: Open an SSH connection to your VM.
@@ -278,8 +279,6 @@ cd /usr/hdp/current/kafka-broker/
 bin/kafka-topics.sh --zookeeper localhost:2181 --create --partitions 1 --replication-factor 1 --topic first-topic
 ```
 
-    NOTE: Based on how Kafka reports its metrics topics with a period ('.') or underscore ('_') may collide with metric names and should be avoided. If they cannot be avoided, then you should only use one of them.
-
   - Step 4:	Ensure the topic was created
 ```
 bin/kafka-topics.sh --list --zookeeper localhost:2181
@@ -291,8 +290,6 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 ```
 bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic first-topic
 ```
-
-    Note: using –from-beginning will tell the broker we want to consume from the first message in the topic. Otherwise it will be from the latest offset.
 
   - In the second shell window connect a producer:
 ```
@@ -311,13 +308,16 @@ bin/kafka-console-producer.sh --broker-list sandbox-hdf:6667 --topic first-topic
 ------------------
 
 # Lab 6
+  
+## Integrating Kafka with NiFi
 
-## Goals:
+In this lab we will learn how to use Nifi to push data to kafka queue, as well as consume data from kafka queue. 
+
+### Goals:
    - Send meetup JSON message to kafka queue using Nifi
    - Receive data from kafka queue using Nifi
    - Write data to local folder
-   
-## Integrating Kafka with NiFi
+
 1. Creating the Kafka topic
   - Open an SSH connection to your VM and naviagte to the Kafka directory
   - For our integration with NiFi create a Kafka topic called ```meetup-raw-rsvps```
