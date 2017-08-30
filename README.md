@@ -166,15 +166,15 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 
 - Step 1: Select all inside Processor Group "Lab 2"
 	- Create a new template by click "create template" button
-  	- ![Image]()
+  	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-0.png)
 - Step 2: Go to Template manager and download the newly create template to disk
 	- In Template manager, click download button next to the newly created template to download it to local disk
-	- ![Image]()
-	- ![Image]()
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-1.png)
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-2.png)
 - Step 3: Upload the template from load disk to create another template
 	- Click upload template button to upload the saved xml template file to Nifi
 	- Create with a new name
-	- ![Image]()
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
 
 
 # Lab 4
