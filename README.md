@@ -65,7 +65,7 @@ ambari-agent restart
 
 ### Login to Ambari
 
-- Access Ambari UI at [http://127.0.0.1:18080](http://127.0.0.1:18080)
+- Access Ambari UI at [http://127.0.0.1:9080](http://127.0.0.1:9080)
 	user: admin
 	password: the one you set in previous step
 
@@ -203,15 +203,15 @@ In this lab, we will learn how configure MiNiFi to send data to NiFi:
    - Prepare flow for Minifi
 
 ## Setting up the Flow for NiFi
-**NOTE:** Before starting NiFi we need to enable Site-to-Site communication. We can make the change via Ambari 
+**NOTE:** Before starting NiFi we need to enable Site-to-Site communication. We can make the change via [Ambari UI](http://127.0.0.1:9080/) 
 
-* Change:
+* Go to Nifi => Config, and change the following values:
 ```
 nifi.remote.input.host=
-nifi.remote.input.secure=true
+nifi.remote.input.secure=
 nifi.remote.input.socket.port=10000			
 ```
-* Restart NiFi via Ambari
+* Then restart NiFi via Ambari
 
 Now we should be ready to create our flow. To do this do the following:
 
