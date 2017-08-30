@@ -172,9 +172,17 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-1.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-2.png)
 - Step 3: Upload the template from load disk to create another template
+	- Change the name inside the downloaded xml so there will be no name conflict with update this to Nifi
+	```<name>Lab2TemplateNew</name>```
 	- Click upload template button to upload the saved xml template file to Nifi
 	- Create with a new name
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
+- Step 4: Create a new flow from existing templates
+	- Create a new Processor Group under "Nifi Lab" and go inisde this newly create group
+	- Drag and drop template on canvas and select one of the template to create a new flow
+	- ![Image]()
+	- ![Image]()
+	- Now you have a flow create from the template. There will be warning on Web socket controller service. This is caused by the limited scope of the controller service. You'll need to create another controller service to solve the problem.
 
 
 # Lab 4
@@ -258,7 +266,7 @@ You should be able to now go to your NiFi flow and see data coming in from MiNiF
 
 ------------------
 
-# Lab 4
+# Lab 5
 
 ## Kafka Basics
 In this lab we are going to explore creating, writing to and consuming Kafka topics. This will come in handy when we later integrate Kafka with NiFi and Storm.
@@ -310,7 +318,7 @@ bin/kafka-console-producer.sh --broker-list demo.hortonworks.com:6667 --topic fi
 
 ------------------
 
-# Lab 5
+# Lab 6
 
 ## Integrating Kafka with NiFi
 1.  Step 1: Creating the Kafka topic
