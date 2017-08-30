@@ -1,6 +1,6 @@
 # Contents
 - [Lab 1](#lab-1)
-  - Build lab nnvironment
+  - Build lab environment
 - [Lab 2](#lab-2)
   - Build a simple NiFi data flow
 - [Lab 3](#lab-3) 
@@ -10,7 +10,7 @@
 - [Lab 5](#lab-5) 
   - Kafka basics
 - [Lab 6](#lab-6)
-  - integrate Kafka with Nifi
+  - Integrate Kafka with Nifi
 
 ## Goals:
   - Setup sandbox lab environment	
@@ -173,7 +173,7 @@ In this lab, we will learn how create, save, upload and create flow using NiFi t
 	- Create with a new name
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
 - Step 4: Create a new flow from existing templates
-	- Create a new Processor Group under "Nifi Lab" and go inisde this newly create group
+	- Create a new Processor Group "Lab 3" under "Nifi Lab" and double click to go inisde
 	- Drag and drop template on canvas and select one of the template to create a new flow
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-4.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-5.png)
@@ -312,14 +312,30 @@ bin/kafka-console-producer.sh --broker-list sandbox-hdf:6667 --topic first-topic
 
 # Lab 6
 
+## Goals:
+   - Send meetup JSON message to kafka queue using Nifi
+   - Receive data from kafka queue using Nifi
+   
 ## Integrating Kafka with NiFi
-1.  Step 1: Creating the Kafka topic
-  - For our integration with NiFi create a Kafka topic called ````meetup-raw-rsvps````
+1. Creating the Kafka topic
+  - Open an SSH connection to your VM and naviagte to the Kafka directory
+  - For our integration with NiFi create a Kafka topic called ```meetup-raw-rsvps```
+```
+bin/kafka-topics.sh --zookeeper localhost:2181 --create --partitions 1 --replication-factor 1 --topic meetup-raw-rsvps
+```
 
+2. We are going to reuse the flow from Lab 2. Add a PublishKafka_0_10 processor to the canvas. Then connect the funnel to PublishKafka_0_10 processor.
+	- Configuration PublishKafka_0_10 processor like the following
+	- ![Image]()
 
-2. Step 2: Add a PublishKafka_0_10 processor to the canvas. It is up to you if you want to remove the PutFile or just add a routing for the success relationship to Kafka
+3. Start the flow and using the Kafka tools verify the data is flowing all the way to Kafka.
+```
+bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic meetup-raw-rsvps
+```
 
-3. Step 3: Start the flow and using the Kafka tools verify the data is flowing all the way to Kafka.
+4. Create a new Processor Group called ```Lab 6``` under ```Nifi Lab```.
+	- Drag and drop ConsumeKafka_0_10 and config like the following
+	- ![image]()
 
 
 ------------------
