@@ -315,6 +315,7 @@ bin/kafka-console-producer.sh --broker-list sandbox-hdf:6667 --topic first-topic
 ## Goals:
    - Send meetup JSON message to kafka queue using Nifi
    - Receive data from kafka queue using Nifi
+   - Write data to local folder
    
 ## Integrating Kafka with NiFi
 1. Creating the Kafka topic
@@ -326,7 +327,7 @@ bin/kafka-topics.sh --zookeeper localhost:2181 --create --partitions 1 --replica
 
 2. We are going to reuse the flow from Lab 2. Add a PublishKafka_0_10 processor to the canvas. Then connect the funnel to PublishKafka_0_10 processor.
 	- Configuration PublishKafka_0_10 processor like the following
-	- ![Image]()
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab6-0.png)
 
 3. Start the flow and using the Kafka tools verify the data is flowing all the way to Kafka.
 ```
@@ -335,8 +336,9 @@ bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topi
 
 4. Create a new Processor Group called ```Lab 6``` under ```Nifi Lab```.
 	- Drag and drop ConsumeKafka_0_10 and config like the following
-	- ![image]()
-
-
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab6-1.png)
+	- Drag adn drop PuFile processor and link the kafka processor to it, set ```Directory``` value to ```/tmp/nifilab```
+	- start all processor and you will see the JSON data file get read from kafka queue and writen to local folder 
+	
 ------------------
 
