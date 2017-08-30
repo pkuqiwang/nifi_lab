@@ -188,7 +188,7 @@ In this lab, we will learn how to create, save, upload Nifi template and create 
 	- Drag and drop template on canvas and select one of the template to create a new flow
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-4.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-5.png)
-	- Now you have a flow create from the template. There will be warning on Web socket controller service. This is caused by the limited scope of the controller service. You'll need to create another controller service to solve the problem.
+	- Now you have a flow create from the template. There will be warning on Web socket procesor. This is caused by the controller service not enabled. Once you enable the controller service by clicking the flasj icon, everything works.
 
 ---------------------
 
