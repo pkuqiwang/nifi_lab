@@ -16,7 +16,18 @@
   - Creating the Kafka topic
   - Adding the Kafka producer processor
   - Verifying the data is flowing
-  
+
+## Goals:
+  - Setup sandbox lab environment	
+  - Consume Meetup RSVP stream
+  - Extract the JSON elements we are interested in
+  - Split the JSON into smaller fragments
+  - Write the JSON to Kafka
+  - Read the data from Kafka
+  - Write data to local disk
+
+We will run through a series of labs and step by step to achieve all of the above goals
+
 ------------------
 
 # Lab 1
@@ -25,7 +36,7 @@
 
 Download the HDF [Sandbox](https://hortonworks.com/downloads/#sandbox) from Hortonworks website.
 
-All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight change too some of the settings.
+All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight change to some of the settings.
 
 ## Use the Sandbox
 
@@ -69,61 +80,45 @@ ambari-agent restart
 
 # Lab 2
 
-#### Goals:
-  - Consume Meetup RSVP stream
-  - Extract the JSON elements we are interested in
-  - Split the JSON into smaller fragments
-  - Write the JSON to Kafka
-  - Analyze the data in Storm, performing a Top N on the groups
-  - Write the data back to Kafka
-  - Consume the data via a streaming API
-
-We will run through a series of labs and step by step to achieve all of the above goals
-
-### Consuming RSVP Data
-
-To get started we need to consume the data from the Meetup RSVP stream, extract what we need, splt the content and save it to a file:
-
-#### Goals:
+## Goals:
    - Consume Meetup RSVP stream
    - Extract the JSON elements we are interested in
    - Split the JSON into smaller fragments
-   - Write the JSON files to disk
+   - Use funnel as a temporary processor sink
+   
+## Consuming RSVP Data
 
- Our final flow for this lab will look like the following:
+To get started we need to consume the data from the Meetup RSVP stream, extract what we need, split the content and save it to a file:
 
-  ![Image](https://github.com/apsaltis/HDF-Workshop/raw/master/lab1.png)
-  A template for this flow can be found [here](https://raw.githubusercontent.com/apsaltis/HDF-Workshop/master/templates/HDF-Workshop_Lab1-Flow.xml)
+Our final flow for this lab will look like the following:
+![Image]()
 
 
   - Step 1: Add a ConnectWebSocket processor to the cavas
       - Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
       - Set WebSocket Client ID to your favorite number.
+      - ![Image]()
+      
   - Step 2: Add an Update Attribute procesor
     - Configure it to have a custom property called ``` mime.type ``` with the value of ``` application/json ```
+    - ![Image]()
+    
   - Step 3. Add an EvaluateJsonPath processor and configure it as shown below:
-  ![Image](https://github.com/apsaltis/HDF-Workshop/raw/master/jsonpath.png)
+  ![Image]()
 
     The properties to add are:
     ```
-    event.name		$.event.event_name
-    
-    event.url		$.event.event_url
-    
-    group.city		$.group.group_city
-    
-    group.state         $.group.group_state
-    
-    group.country	$.group.group_country
-    
-    group.name		$.group.group_name
-    
-    venue.lat		$.venue.lat
-    
-    venue.lon		$.venue.lon
-    
+    event.name		$.event.event_name  
+    event.url		$.event.event_url    
+    group.city		$.group.group_city    
+    group.state         $.group.group_state    
+    group.country	$.group.group_country    
+    group.name		$.group.group_name    
+    venue.lat		$.venue.lat    
+    venue.lon		$.venue.lon    
     venue.name		$.venue.venue_name
     ```
+    
   - Step 4: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
   - Step 5: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
     ```
