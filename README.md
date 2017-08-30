@@ -16,64 +16,54 @@
   - Creating the Kafka topic
   - Adding the Kafka producer processor
   - Verifying the data is flowing
-
----------------
+  
+------------------
 
 # Lab 1
 
-## Accessing your Cluster
+## Get HDF Sandbox
 
-Credentials will be provided for these services by the instructor:
+Download the HDF [Sandbox](https://hortonworks.com/downloads/#sandbox) from Hortonworks website.
 
-* SSH
-* Ambari
+All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight change too some of the settings.
 
-## Use your Cluster
+## Use the Sandbox
+
+Once the Sandbox is started in VirtualBox, the start page will show you the start page link like 
+
+[http://127.0.0.1:18888](http://127.0.0.1:18888)
 
 ### To connect using Putty from Windows laptop
 
-- Right click to download [this ppk key](https://raw.githubusercontent.com/apsaltis/HDF-Workshop/master/hdf-workshop.ppk) > Save link as > save to Downloads folder
-- Use putty to connect to your node using the ppk key:
-  - Connection > SSH > Auth > Private key for authentication > Browse... > Select hdf-workshop.ppk
-![Image](https://raw.githubusercontent.com/apsaltis/HDF-Workshop/master/putty.png)
-
-- Create a new seession called `hdf-workshop` and  sure to click "Save" on the session page before logging in
-![Image](https://github.com/apsaltis/HDF-Workshop/raw/master/putty-session.png)
-
+- Use putty to connect to your sandbox, password is "hadoop"
+```
+ssh root@127.0.0.1 -p 12222
+```
 
 ### To connect from Linux/MacOSX laptop
 
-- SSH into your EC2 node using below steps:
-- Right click to download [this pem key](https://raw.githubusercontent.com/apsaltis/HDF-Workshop/master/hdf-workshop.pem)  > Save link as > save to Downloads folder
-- Copy pem key to ~/.ssh dir and correct permissions
-    ```
-    cp ~/Downloads/hdf-workshop.pem ~/.ssh/
-    chmod 400 ~/.ssh/hdf-workshop.pem
-    ```
- - Login to the ec2 node of the you have been assigned by replacing IP_ADDRESS_OF_EC2_NODE below with EC2 node IP Address (your instructor will provide this)
-    ```
-     ssh -i  ~/.ssh/hdf-workshop.pem centos@IP_ADDRESS_OF_EC2_NODE
+- Use terminal to connect to your sandbox, password is "hadoop"
+```
+ssh root@127.0.0.1 -p 12222
+```
 
-    ```
+### Reset Ambari password
 
-  - To change user to root you can:
-    ```
-    sudo su -
-    ```
+- once you remote inside the sandbox, use following command to reset Ambari password
+```
+# Updates password
+ambari-admin-password-reset
+# If Ambari doesn't restart automatically, restart ambari service
+ambari-agent restart
+```
 
+### Login to Ambari
 
-#### Login to Ambari
+- You could access Ambari UI at [http://127.0.0.1:18080](http://127.0.0.1:18080)
 
-- Login to Ambari web UI by opening http://{YOUR_IP}:8080 and log in with **admin/hdfworkshop**
+### NiFi Access
 
-- You will see a list of Hadoop components running on your node on the left side of the page
-  - They should all show green (ie started) status. If not, start them by Ambari via 'Service Actions' menu for that service
-
-#### NiFi Install
-
-- NiFi is installed at: /usr/hdf/current/nifi
-
-
+- You could access Nifi UI at [http://127.0.0.1:19090](http://127.0.0.1:19090)
 
 -----------------------------
 
