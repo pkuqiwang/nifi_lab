@@ -93,21 +93,21 @@ To get started we need to consume the data from the Meetup RSVP stream, extract 
 Our final flow for this lab will look like the following:
 ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2.png)
 
-- Step 1: Drag a Processor Group to the canvas and name it ```Nifi Lab```
+1. Drag a Processor Group to the canvas and name it ```Nifi Lab```
 	- double click the newly create Porcessor Group and create a new Processor Group called ```Lab 2```
 	- double click ```Lab 2``` Processor Group and continue the following steps inside
 
-- Step 2: Add a ConnectWebSocket processor to the cavas
+2. Add a ConnectWebSocket processor to the cavas
 	- Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
 	- Set WebSocket Client ID to your favorite number.
       	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
 	- Enable controller service by click the flash icon
       
-- Step 3: Add an Update Attribute procesor
+3. Add an Update Attribute procesor
 	- Configure it to have a custom property called ``` mime.type ``` with the value of ```application/json```
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-2.png)
     
-- Step 4. Add an EvaluateJsonPath processor and configure it as shown below:
+4. Add an EvaluateJsonPath processor and configure it as shown below:
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-3.png)
 
     	- The properties to add are:
@@ -123,9 +123,9 @@ Our final flow for this lab will look like the following:
 	venue.name	$.venue.venue_name
 	```
     
-- Step 5: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
+5. Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
   
-- Step 6: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
+6. Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
 ```
 {
 	"event_name": "${event.name}",
@@ -144,7 +144,7 @@ Our final flow for this lab will look like the following:
 	 	}
 }
 ```
-- Step 7: Add a funnel processor to the canvas and connect ReplaceText to it
+7. Add a funnel processor to the canvas and connect ReplaceText to it
 
 #### Questions to Answer
 1. What does a full RSVP Json object look like?
@@ -167,23 +167,23 @@ In this lab, we will learn how to create, save, upload Nifi template and create 
    - Save Template to xml file and upload xml template file to Nifi
    - Create new flow with existing template
 
-- Step 1: Select everything inside Processor Group ```Lab 2```
+1. Select everything inside Processor Group ```Lab 2```
 	- Create a new template by click ```create template``` button
   	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-0.png)
 
-- Step 2: Go to Template manager and download the newly created template to disk as xml file
+2. Go to Template manager and download the newly created template to disk as xml file
 	- In Template manager, click download button next to the newly created template to download it to local disk
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-1.png)
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-2.png)
 
-- Step 3: Upload the template xml file from load disk to create another template
+3. Upload the template xml file from load disk to create another template
 	- Change the template name inside the downloaded xml file so there will be no conflict when upload this template to Nifi
 	```<name>Lab2TemplateNew</name>```
 	- Click upload template button to upload the saved xml template file to Nifi
 	- Create with a new name
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-3.png)
 
-- Step 4: Create a new flow from existing templates
+4. Create a new flow from existing templates
 	- Create a new Processor Group ```Lab 3``` under ```Nifi Lab``` and double click to go inisde
 	- Drag and drop template on canvas and select one of the template to create a new flow
 	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab3-4.png)
