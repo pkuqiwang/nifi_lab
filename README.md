@@ -93,66 +93,91 @@ To get started we need to consume the data from the Meetup RSVP stream, extract 
 Our final flow for this lab will look like the following:
 ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2.png)
 
-
-  - Step 1: Add a ConnectWebSocket processor to the cavas
+  - Step 1: Drag a Processor Group tot he canvas and name it "Nifi Lab"
+  	- double click the newly create Porcessor Group and create a new Processor Group called "Lab 2"
+	- double click "Lab 2" Processor Group and continue the following steps inside
+  - Step 2: Add a ConnectWebSocket processor to the cavas
       - Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
       - Set WebSocket Client ID to your favorite number.
       - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
       
-  - Step 2: Add an Update Attribute procesor
+  - Step 3: Add an Update Attribute procesor
     - Configure it to have a custom property called ``` mime.type ``` with the value of ``` application/json ```
     - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-2.png)
     
-  - Step 3. Add an EvaluateJsonPath processor and configure it as shown below:
+  - Step 4. Add an EvaluateJsonPath processor and configure it as shown below:
     - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-3.png)
 
-    The properties to add are:
-    ```
-    event.name		$.event.event_name  
-    event.url		$.event.event_url    
-    group.city		$.group.group_city    
-    group.state         $.group.group_state    
-    group.country	$.group.group_country    
-    group.name		$.group.group_name    
-    venue.lat		$.venue.lat    
-    venue.lon		$.venue.lon    
-    venue.name		$.venue.venue_name
-    ```
+    - The properties to add are:
+```
+event.name	$.event.event_name  
+event.url	$.event.event_url    
+group.city	$.group.group_city    
+group.state	$.group.group_state    
+group.country	$.group.group_country    
+group.name	$.group.group_name    
+venue.lat	$.venue.lat    
+venue.lon	$.venue.lon    
+venue.name	$.venue.venue_name
+```
     
-  - Step 4: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
-  - Step 5: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
-    ```
-         {
-        "event_name": "${event.name}",
-        "event_url": "${event.url}",
-        "venue" : {
-        	"lat": "${venue.lat}",
-        	"lon": "${venue.lon}",
-        	"name": "${venue.name}"
-        },
-        "group" : {
-          "group_city" : "${group.city}",
-          "group_country" : "${group.country}",
-          "group_name" : "${group.name}",
-          "group_state" : "${group.state}",
-          $2
-         }
-      }
-      ```
-  - Step 6: Add a PutFile processor to the canvas and configure it to write the data out to ```/tmp/rsvp-data```
+  - Step 5: Add a SplitJson processor and configure the JsonPath Expression to be ```$.group.group_topics ```
+  - Step 6: Add a ReplaceText processor and configure the Search Value to be ```([{])([\S\s]+)([}])``` and the Replacement Value to be
+```
+{
+	"event_name": "${event.name}",
+	"event_url": "${event.url}",
+	"venue" : {
+		"lat": "${venue.lat}",
+		"lon": "${venue.lon}",
+		"name": "${venue.name}"
+	},
+	"group" : {
+	  	"group_city" : "${group.city}",
+	  	"group_country" : "${group.country}",
+	  	"group_name" : "${group.name}",
+	  	"group_state" : "${group.state}",
+	 	 $2
+	 	}
+}
+```
+  - Step 7: Add a funnel processor to the canvas and connect ReplaceText to it
 
 ##### Questions to Answer
 1. What does a full RSVP Json object look like?
 2. How many output files do you end up with?
 3. How can you change the file name that Json is saved as from PutFile?
-3. Why do you think we are splitting out the RSVP's by group?
-4. Why are we using the Update Attribute processor to add a mime.type?
-4. How can you cange the flow to get the member photo from the Json and download it.
-
+4. Why do you think we are splitting out the RSVP's by group?
+5. Why are we using the Update Attribute processor to add a mime.type?
+6. How can you cange the flow to get the member photo from the Json and download it.
 
 ------------------
 
 # Lab 3
+
+## Using Nifi template ##
+
+In this lab, we will learn how create, save, upload and create flow using NiFi template:
+
+## Goals:
+   - Create Nifi flow to template
+   - Save Template to file
+   - Create new flow with existing template
+
+- Step 1: Select all inside Processor Group "Lab 2"
+	- Create a new template by click "create template" button
+  	- ![Image]()
+- Step 2: Go to Template manager and download the newly create template to disk
+	- In Template manager, click download button next to the newly created template to download it to local disk
+	- ![Image]()
+	- ![Image]()
+- Step 3: Upload the template from load disk to create another template
+	- Click upload template button to upload the saved xml template file to Nifi
+	- Create with a new name
+	- ![Image]()
+
+
+# Lab 4
 
 ## Getting started with MiNiFi ##
 
