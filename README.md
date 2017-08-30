@@ -91,20 +91,20 @@ ambari-agent restart
 To get started we need to consume the data from the Meetup RSVP stream, extract what we need, split the content and save it to a file:
 
 Our final flow for this lab will look like the following:
-![Image]()
+![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2.png)
 
 
   - Step 1: Add a ConnectWebSocket processor to the cavas
       - Configure the WebSocket Client Controller Service. The WebSocket URI for the meetups is: ```ws://stream.meetup.com/2/rsvps```
       - Set WebSocket Client ID to your favorite number.
-      - ![Image]()
+      - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-1.png)
       
   - Step 2: Add an Update Attribute procesor
     - Configure it to have a custom property called ``` mime.type ``` with the value of ``` application/json ```
-    - ![Image]()
+    - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-2.png)
     
   - Step 3. Add an EvaluateJsonPath processor and configure it as shown below:
-  ![Image]()
+    - ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab2-3.png)
 
     The properties to add are:
     ```
