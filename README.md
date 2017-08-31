@@ -194,73 +194,85 @@ In this lab, we will learn how to create, save, upload Nifi template and create 
 
 # Lab 4
 
-## Getting started with MiNiFi
+## Getting started with Romte Process Group and MiNiFi
    
-In this lab, we will learn how to use Remote Process Group and use MiNiFi to send data to NiFi instance.
+In this lab, we will learn how to use Remote Process Group and use MiNiFi to send data to remote NiFi instance.
 
 ### Goals:
    - Understand how to communicate to remote Nifi instance
    - Prepare flow for MiNifi
 
 ## Setting up the Flow for NiFi
-**NOTE:** Before start this lab, we need to enable Site-to-Site communication. Make the change via [Ambari UI](http://127.0.0.1:9080/) 
+**NOTE:** Before start this lab, we need to enable Site-to-Site communication and install MiNifi on sandbox VM. 
+
+Make the change via [Ambari UI](http://127.0.0.1:9080/) 
 
 * Go to Nifi => Config => Advanced nifi-properties, and change the following values:
 * ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab4-0.png)
 
 * Then restart NiFi via Ambari
+* Remote to VM console and execute the following commands to install MiNifi on VM
+```
+cd /usr/hdf/current/
+mkdir minifi
+cd minifi/
+
+wget http://public-repo-1.hortonworks.com/HDF/3.0.1.1/minifi-1.0.3.0.1.1-5-bin.tar.gz
+wget http://public-repo-1.hortonworks.com/HDF/3.0.1.1/minifi-toolkit-1.0.3.0.1.1-5-bin.tar.gz
+
+tar -xzf minifi-1.0.3.0.1.1-5-bin.tar.gz
+tar -xzf minifi-toolkit-1.0.3.0.1.1-5-bin.tar.gz
+```
 
 Now we should be ready to create our flow. To do this do the following:
 
-1. The first thing we are going to do is setup an Input Port. This is the port that MiNiFi will be sending data to. To do this drag the Input Port icon to the canvas and call it "From MiNiFi".
+1. The first thing we are going to do is setup an Input Port. This is the port that MiNiFi will be sending data to. To do this drag the Input Port icon to the canvas and call it ```From MiNiFi```.
 
-2. Now that the Input Port is configured we need to have somewhere for the data to go once we receive it. In this case we will keep it very simple and just log the attributes. To do this drag the Processor icon to the canvas and choose the LogAttribute processor.
+2. Now that the Input Port is configured we need to have somewhere for the data to go once we receive it. In this case we will use a funnel so all incoming data will be buffered in teh queue.
 
 3. Now that we have the input port and the processor to handle our data, we need to connect them. 
 
 4. We are now ready to build the MiNiFi side of the flow. To do this do the following:
-	- Add a GenerateFlowFile processor to the canvas (don't forget to configure the properties on it)
+	- Create a new Process Group called ```Lab 4``` and go inside
+	- Add a GenerateFlowFile processor to the canvas and change ```File Size``` to ```10B```, ```Run Schedule``` to ```10 sec```
 	- Add a Remote Processor Group to the canvas
 	- Set the URL to ```http://sandbox-hdf:19090/nifi/```
  	- Connect the GenerateFlowFile to the Remote Process Group
-	- Right click the Remote Process Group and Enable Transmission	
+	- Right click the Remote Process Group and Enable Transmission
+	
+5. Now go back to the root canvas and you should see data being buffered in the queue after the Input Port ```From Minifi```. 
 
-5. The next step is to generate the flow we need for MiNiFi. To do this do the following steps:
-	- Create a template for MiNiFi 
-	- Select the GenerateFlowFile and the NiFi Flow Remote Processor Group (these are the only things needed for MiMiFi)
+6. The next step is to generate the flow we need for MiNiFi. To do this do the following steps:
+	- Go into ```Lab 4```, select the GenerateFlowFile and the NiFi Flow Remote Processor Group (these are the only things needed for MiMiFi)
 	- Select the "Create Template" button from the toolbar
 	- Choose a name for your template
 	
 7. Download the template to your local disk
 
-8. Now SCP the template you downloaded to the ```/tmp``` directory on your VM. P
+8. Now SCP the template you downloaded to the ```/tmp``` directory on your VM. (You can use [WinSCP](https://winscp.net/eng/download.php) if you are on Windows)
 ```
-scp -P 12222 {path to MiNifi template} root@127.0.0.1:/tmp
+scp -P 12222 <local MiNifi template> root@127.0.0.1:/tmp
 root@127.0.0.1's password:hadoop
 ```
 
-9. We are now ready to setup MiNiFi. However before doing that we need to convert the template to YAML format which MiNiFi uses. To do this we need to do the following:
+9. We are now ready to setup MiNiFi. We need to convert the template to YAML format which MiNiFi uses. To do this we need to do the following. The ```config.yml``` is the file that MiNiFi uses to generate the nifi.properties file and the flow.xml.gz.
+```
+cd /usr/hdf/current/minifi/minifi-toolkit-1.0.3.0.1.1-5
+bin/config.sh transform /tmp/MiNiFi_Flow.xml /usr/hdf/current/minifi/minifi-1.0.3.0.1.1-5/conf/config.yml
+```
 
-	- Navigate to the minifi-toolkit directory (/usr/hdf/current/minifi/minifi-toolkit-0.2.0)
-	- Transform the template that we downloaded using the following command:
+10. That is it, we are now ready to start MiNiFi. To start MiNiFi from a command prompt execute the following:
 
-      ```bin/config.sh transform <INPUT_TEMPLATE> <OUTPUT_FILE>```
+```
+cd /usr/hdf/current/minifi/minifi-1.0.3.0.1.1-5
+bin/minifi.sh start
+```
 
-      For example:
-
-      ```bin/config.sh transform /temp/MiNiFi_Flow.xml config.yml```
-
-10. Next copy the ```config.yml``` to the ```minifi-0.2.0/conf``` directory. That is the file that MiNiFi uses to generate the nifi.properties file and the flow.xml.gz for MiNiFi.
-
-11. That is it, we are now ready to start MiNiFi. To start MiNiFi from a command prompt execute the following:
-
-  ```
-  cd /usr/hdf/current/minifi/minifi-0.2.0
-  bin/minifi.sh start
-
-  ```
-
-You should be able to now go to your NiFi flow and see data coming in from MiNiFi.
+11. You should be able to now go to your NiFi flow and see data coming in from MiNiFi. Once you confirm everything is working, stop MiNifi flow with following command
+```
+cd /usr/hdf/current/minifi/minifi-1.0.3.0.1.1-5
+bin/minifi.sh stop
+```
 
 ------------------
 
