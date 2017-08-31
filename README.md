@@ -206,7 +206,7 @@ In this lab, we will learn how to use Remote Process Group and use MiNiFi to sen
 **NOTE:** Before start this lab, we need to enable Site-to-Site communication. Make the change via [Ambari UI](http://127.0.0.1:9080/) 
 
 * Go to Nifi => Config => Advanced nifi-properties, and change the following values:
-![Image]()
+* ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab4-0.png)
 
 * Then restart NiFi via Ambari
 
