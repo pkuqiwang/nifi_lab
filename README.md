@@ -14,15 +14,17 @@
 
 ## Goals of the Labs:
   - Setup sandbox lab environment	
-  - Consume Meetup RSVP stream
+  - Consume Meetup RSVP stream using Nifi
   - Extract the JSON elements we are interested in
   - Split the JSON into smaller fragmentsand 
   - Create, save, upload Nifi template
   - Create Nifi flow from template
   - Send data to remote Nifi instance
-  - Write data to Kafka with tool and Nifi
-  - Consume data from Kafka with tool and Nifi
-  - Write data to local disk
+  - Create MiNifi flow from template
+  - Deploy and execute MiNifi flow 
+  - Write data to Kafka with toolkit and Nifi
+  - Consume data from Kafka with toolkit and Nifi
+  - Write data to local disk with Nifi
 
 We will run through a series of labs and step by step to achieve all of the above goals
 
@@ -78,7 +80,7 @@ ambari-agent restart
 
 # Lab 2
 
-## Build Nifi Flow
+## Build a basic Nifi Flow
 
 ### Goals:
    - Consume Meetup RSVP stream
