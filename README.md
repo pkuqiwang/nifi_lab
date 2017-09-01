@@ -76,6 +76,11 @@ ambari-agent restart
 - Access Nifi UI at [http://127.0.0.1:19090/nifi](http://127.0.0.1:19090/nifi)
 - For more reference about Nifi, please go to Nifi [documents](https://nifi.apache.org/docs.html)
 
+### Browser
+
+- Please use Chrome, Firefox, Safari or web browser for the labs.
+- Internet Explorer is not supported by Nifi and is not recommended for the labs. 
+
 -----------------------------
 
 # Lab 2
@@ -88,7 +93,7 @@ ambari-agent restart
    - Split the JSON into smaller fragments
    - Use funnel as a temporary processor sink
    
-## Consuming RSVP Data
+### Consuming RSVP Data
 
 To get started we need to consume the data from the Meetup RSVP stream, extract what we need, split the content and save it to a file:
 
@@ -148,8 +153,8 @@ Our final flow for this lab will look like the following:
 ```
 7. Add a funnel processor to the canvas and connect ReplaceText to it
 
-#### Questions to Answer
-1. What does a full RSVP Json object look like?
+### Questions to Answer
+1. What does a full RSVP JSON object look like?
 2. How many output files do you end up with?
 3. How can you change the file name that Json is saved as from PutFile?
 4. Why do you think we are splitting out the RSVP's by group?
@@ -204,7 +209,7 @@ In this lab, we will learn how to use Remote Process Group and use MiNiFi to sen
    - Understand how to communicate to remote Nifi instance
    - Prepare flow for MiNifi
 
-## Setting up the Flow for NiFi
+### Setting up Site-to-site for NiFi
 **NOTE:** Before start this lab, we need to enable Site-to-Site communication and install MiNifi on sandbox VM. 
 
 Make the change via [Ambari UI](http://127.0.0.1:9080/) 
@@ -213,6 +218,9 @@ Make the change via [Ambari UI](http://127.0.0.1:9080/)
 * ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab4-0.png)
 
 * Then restart NiFi via Ambari
+
+### Install MiNiFi on Sandbox VM
+
 * Remote to VM console and execute the following commands to install MiNifi on VM
 ```
 cd /usr/hdf/current/
@@ -290,6 +298,8 @@ In this lab we are going to explore creating, writing to and consuming Kafka top
    - receive messages from kafka topic
 
 Before start the lab steps, make sure kafka service is started in [Ambari UI](http://127.0.0.1:9080/). If Kafka is not started, manually start the service from Ambari.
+
+### Kafka toolkit 
 
 1. Creating a topic
   - Open an SSH connection to your VM.
