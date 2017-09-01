@@ -78,14 +78,16 @@ ambari-agent restart
 
 ### Browser
 
-- Please use Chrome, Firefox, Safari or web browser for the labs.
-- Internet Explorer is not supported by Nifi and is not recommended for the labs. 
+- Please use Chrome, Firefox, Safari or Edge for the labs.
+- Internet Explorer is not supported by Nifi and should not be used for the labs.
+
+There are more [tutorials](https://hortonworks.com/tutorials/?tab=product-hdf) available on Hortonworks website that you could following using the same sandbox.
 
 -----------------------------
 
 # Lab 2
 
-## Build a basic Nifi Flow
+## Build a Basic Nifi Flow
 
 ### Goals:
    - Consume Meetup RSVP stream
@@ -151,15 +153,16 @@ Our final flow for this lab will look like the following:
 	 	}
 }
 ```
+
 7. Add a funnel processor to the canvas and connect ReplaceText to it
 
 ### Questions to Answer
-1. What does a full RSVP JSON object look like?
-2. How many output files do you end up with?
-3. How can you change the file name that Json is saved as from PutFile?
-4. Why do you think we are splitting out the RSVP's by group?
-5. Why are we using the Update Attribute processor to add a mime.type?
-6. How can you cange the flow to get the member photo from the Json and download it.
+- What does a full RSVP JSON object look like?
+- How many output files do you end up with?
+- How can you change the file name that Json is saved as from PutFile?
+- Why do you think we are splitting out the RSVP's by group?
+- Why are we using the Update Attribute processor to add a mime.type?
+- How can you cange the flow to get the member photo from the Json and download it.
 
 ------------------
 
@@ -201,9 +204,9 @@ In this lab, we will learn how to create, save, upload Nifi template and create 
 
 # Lab 4
 
-## Getting started with Romte Process Group and MiNiFi
+## Getting started with Site-to-Site Communication and MiNiFi
    
-In this lab, we will learn how to use Remote Process Group and use MiNiFi to send data to remote NiFi instance.
+In this lab, we will learn how to use Remote Process Group for site-to-site communicaton and use MiNiFi to send data to remote NiFi instance.
 
 ### Goals:
    - Understand how to communicate to remote Nifi instance
@@ -243,11 +246,11 @@ Now we should be ready to create our flow. To do this do the following:
 3. Now that we have the input port and the processor to handle our data, we need to connect them. 
 
 4. We are now ready to build the MiNiFi side of the flow. To do this do the following:
-	- Create a new Process Group called ```Lab 4``` and go inside
+	- Create a new Process Group called ```Lab 4``` inside ```Nifi Lab``` and go inside
 	- Add a GenerateFlowFile processor to the canvas and change ```File Size``` to ```10B```, ```Run Schedule``` to ```10 sec```
 	- Add a Remote Processor Group to the canvas
 	- Set the URL to ```http://sandbox-hdf:19090/nifi/```
- 	- Connect the GenerateFlowFile to the Remote Process Group
+ 	- Connect the GenerateFlowFile to the Remote Process Group (may need wait a bit for remote input ports to be refreshed)
 	- Right click the Remote Process Group and Enable Transmission
 	
 5. Now go back to the root canvas and you should see data being buffered in the queue after the Input Port ```From Minifi```. 
@@ -325,19 +328,14 @@ bin/kafka-topics.sh --list --zookeeper localhost:2181
 ```
 bin/kafka-console-consumer.sh --zookeeper localhost:2181 --from-beginning --topic first-topic
 ```
-
   - In the second shell window connect a producer:
 ```
 bin/kafka-console-producer.sh --broker-list sandbox-hdf:6667 --topic first-topic
 ```
-
   - Sending messages. Now that the producer is connected, we can type messages.
   - Type a message in the producer window
-
   - Messages should appear in the consumer window.
-
   - Close the consumer (ctrl-c) and reconnect using the default offset, of latest. You will now see only new messages typed in the producer window.
-
   - As you type messages in the producer window they should appear in the consumer window.
 
 ------------------
