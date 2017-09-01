@@ -81,7 +81,7 @@ ambari-agent restart
 - Please use Chrome, Firefox, Safari or Edge for the labs.
 - Internet Explorer is not supported by Nifi and should not be used for the labs.
 
-There are more [tutorials](https://hortonworks.com/tutorials/?tab=product-hdf) available on Hortonworks website that you could following using the same sandbox.
+There are more [tutorials](https://hortonworks.com/tutorials/?tab=product-hdf) available on Hortonworks website that you could follow using the same sandbox.
 
 -----------------------------
 
