@@ -54,7 +54,7 @@ Once the Sandbox is started in VirtualBox, the start page will show you the star
 	- port: 12222
 	- user: root
 	- password: hadoop
-	- ![Image](![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab1-1.PNG))
+	- ![Image](https://github.com/pkuqiwang/nifi_lab/blob/master/lab1-1.PNG)
 
 ### Reset Ambari password
 
