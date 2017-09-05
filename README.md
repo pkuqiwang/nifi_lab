@@ -42,7 +42,7 @@ We will run through a series of labs and step by step to achieve all of the abov
 
 Download the HDF [Sandbox](https://hortonworks.com/downloads/#sandbox) from Hortonworks website.
 
-All the following instrucitons are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight changes to some of the settings.
+All the following instructions are based on the [VirtualBox](https://www.virtualbox.org/wiki/Downloads) version of the Sandbox, if you use VMWare, you might need to make slight changes to some of the settings.
 
 ## Use the Sandbox
 
